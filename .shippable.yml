@@ -3,12 +3,13 @@ language: python
 python:
   - "3.4"
 
-before_install:
-  - virtualenv -p $SHIPPABLE_PYTHON $HOME/ve/
-  - source $HOME/ve/bin/activate
-
-install:
-  - pip install pytest
-
-script:
-  - py.test --verbose
+build:
+  pre_ci_boot:
+    image_name: gcr.io/clustree-cloud/shippable-ubuntu-1510
+    image_tag: latest
+    pull: true
+  ci:
+    - virtualenv -p /usr/bin/python$SHIPPABLE_PYTHON_VERSION $HOME/clustree_ve
+    - source $HOME/clustree_ve/bin/activate
+    - pip install pytest
+    - py.test --verbose
